@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "pywc"
+version = "0.0.0"
+description = "Custom python wc implementation"
+authors = ["Alexandru Prodan <prodanalexandru1999@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.2.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
