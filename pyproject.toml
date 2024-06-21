@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pywc"
-version = "0.0.0"
+version = "1.0.0"
 description = "Custom python wc implementation"
 authors = ["Alexandru Prodan <prodanalexandru1999@gmail.com>"]
 readme = "README.md"
