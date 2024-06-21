@@ -65,13 +65,8 @@ def handle(args, file_stream: Union[BytesIO, BufferedReader]):
             count_words,
             count_bytes,
         ]
-
-    res = []
-    for handler in handlers:
-        res.append(handler(file_stream))
     
-    return res
-
+    return [handler(file_stream) for handler in handlers]
 
 if __name__ == "__main__":
     args = parse_args()
