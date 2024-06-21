@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+
+jobs:
+  ci:
+    name: Build pywc
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up python 3
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Install pipx
+        run: |
+          python3 -m pip install --user pipx
+          python3 -m pipx ensurepath
+      - name: Install poetry
+        run: pipx install poetry
+      - name: Install dependencies
+        run: |
+          poetry install --with test
+      - name: Build pywc package
+        run: |
+          poetry build
+      - name: Run tests
+        run: |
+          poetry run pytest tests/
+      - name: Upload package
+        uses: actions/upload-artifact@v3
+        with:
+          name: pywc
+          path: dist/
+  generate-executable:
+    name: Generate package executable
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up python 3
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Install pipx
+        run: |
+          python3 -m pip install --user pipx
+          python3 -m pipx ensurepath
+      - name: Install poetry
+        run: pipx install poetry
+      - name: Install dependencies
+        run: |
+          poetry install 
+      - name: Install pyinstaller
+        run: |
+          pip3 install pyinstaller
+      - name: Create executable ${{ matrix.os }}
+        run: pyinstaller --onefile --name pywc pywc/main.py
+      - name: Upload executable ${{ matrix.os }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: pywc-${{ matrix.os }}
+          path: dist
+
