@@ -34,7 +34,7 @@ jobs:
         run: |
           poetry run pytest tests/
       - name: Upload package
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pywc
           path: dist/
@@ -66,7 +66,7 @@ jobs:
       - name: Create executable ${{ matrix.os }}
         run: pyinstaller --onefile --name pywc pywc/main.py
       - name: Upload executable ${{ matrix.os }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pywc-${{ matrix.os }}
           path: dist
